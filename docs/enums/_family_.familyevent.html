@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EngineEntityListener | @nova-engine/ecs</title>
+	<title>FamilyEvent | @nova-engine/ecs</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,88 +56,54 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_engine_.html">&quot;Engine&quot;</a>
+					<a href="../modules/_family_.html">&quot;Family&quot;</a>
 				</li>
 				<li>
-					<a href="_engine_.engineentitylistener.html">EngineEntityListener</a>
+					<a href="_family_.familyevent.html">FamilyEvent</a>
 				</li>
 			</ul>
-			<h1>Interface EngineEntityListener</h1>
+			<h1>Enumeration FamilyEvent</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">EngineEntityListener</span>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Methods</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported"><a href="_engine_.engineentitylistener.html#onentityadded" class="tsd-kind-icon">on<wbr>Entity<wbr>Added</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported"><a href="_engine_.engineentitylistener.html#onentityremoved" class="tsd-kind-icon">on<wbr>Entity<wbr>Removed</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-not-exported"><a href="_family_.familyevent.html#entityadded" class="tsd-kind-icon">Entity<wbr>Added</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-not-exported"><a href="_family_.familyevent.html#entityremoved" class="tsd-kind-icon">Entity<wbr>Removed</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="onentityadded" class="tsd-anchor"></a>
-					<h3>on<wbr>Entity<wbr>Added</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Entity<wbr>Added<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/_entity_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in Engine.ts:6</li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>entity: <a href="../classes/_entity_.entity.html" class="tsd-signature-type">Entity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-not-exported">
+					<a name="entityadded" class="tsd-anchor"></a>
+					<h3>Entity<wbr>Added</h3>
+					<div class="tsd-signature tsd-kind-icon">Entity<wbr>Added<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;FamilyEvent.ComponentRemoved&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in Family.ts:25</li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="onentityremoved" class="tsd-anchor"></a>
-					<h3>on<wbr>Entity<wbr>Removed</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Entity<wbr>Removed<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../classes/_entity_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in Engine.ts:8</li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>entity: <a href="../classes/_entity_.entity.html" class="tsd-signature-type">Entity</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-not-exported">
+					<a name="entityremoved" class="tsd-anchor"></a>
+					<h3>Entity<wbr>Removed</h3>
+					<div class="tsd-signature tsd-kind-icon">Entity<wbr>Removed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;FamilyEvent.EntityRemoved&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in Family.ts:26</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -150,13 +116,13 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_component_.html">"<wbr>Component"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_engine_.html">"<wbr>Engine"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_entity_.html">"<wbr>Entity"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_family_.html">"<wbr>Family"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -169,27 +135,36 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../enums/_engine_.engineentityevent.html" class="tsd-kind-icon">Engine<wbr>Entity<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_engine_.engine.html" class="tsd-kind-icon">Engine</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_engine_.engineentitylistener.html" class="tsd-kind-icon">Engine<wbr>Entity<wbr>Listener</a>
+					<li class="current tsd-kind-enum tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_family_.familyevent.html" class="tsd-kind-icon">Family<wbr>Event</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="_engine_.engineentitylistener.html#onentityadded" class="tsd-kind-icon">on<wbr>Entity<wbr>Added</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-not-exported">
+								<a href="_family_.familyevent.html#entityadded" class="tsd-kind-icon">Entity<wbr>Added</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="_engine_.engineentitylistener.html#onentityremoved" class="tsd-kind-icon">on<wbr>Entity<wbr>Removed</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-not-exported">
+								<a href="_family_.familyevent.html#entityremoved" class="tsd-kind-icon">Entity<wbr>Removed</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-private tsd-is-not-exported">
+						<a href="../classes/_family_.abstractfamily.html" class="tsd-kind-icon">Abstract<wbr>Family</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../classes/_family_.cachedfamily.html" class="tsd-kind-icon">Cached<wbr>Family</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../classes/_family_.familybuilder.html" class="tsd-kind-icon">Family<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-private tsd-is-not-exported">
+						<a href="../classes/_family_.noncachedfamily.html" class="tsd-kind-icon">Non<wbr>Cached<wbr>Family</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/_family_.family.html" class="tsd-kind-icon">Family</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
