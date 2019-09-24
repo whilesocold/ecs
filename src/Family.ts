@@ -212,4 +212,4 @@ class FamilyBuilder {
   }
 }
 
-export { Family, CachedFamily, FamilyBuilder };
+export { AbstractFamily, Family, CachedFamily, FamilyBuilder };

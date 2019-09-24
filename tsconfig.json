@@ -9,7 +9,7 @@
     "outDir": "lib",
     "sourceMap": true,
     "declaration": true,
-    "lib": ["es5", "es2015.promise", "dom"]
+    "lib": ["es5", "es2015.promise", "es2015.iterable" ,"dom"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
