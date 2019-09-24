@@ -2,6 +2,10 @@
 import { Component, ComponentClass } from "./Component";
 import { EventEmitter } from "events";
 declare type EntityChangeListener = (entity: Entity) => any;
+declare enum EntityEvent {
+    COMPONENT_ADDED = "EntityEvent.COMPONENT_ADDED",
+    COMPONENT_REMOVED = "EntityEvent.COMPONENT_REMOVED",
+}
 declare class Entity extends EventEmitter {
     private _id;
     private readonly _components;
@@ -26,4 +30,4 @@ declare class Entity extends EventEmitter {
     addChangeListener(listener: EntityChangeListener): this;
     removeChangeListener(listener: EntityChangeListener): this;
 }
-export { Entity, EntityChangeListener };
+export { Entity, EntityEvent, EntityChangeListener };

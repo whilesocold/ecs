@@ -220,4 +220,4 @@ class Entity extends EventEmitter {
     }
 }
 
-export {Entity, EntityChangeListener};
+export {Entity, EntityEvent, EntityChangeListener};

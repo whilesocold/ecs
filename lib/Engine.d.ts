@@ -6,6 +6,10 @@ interface EngineEntityListener {
     onEntityAdded(entity: Entity): void;
     onEntityRemoved(entity: Entity): void;
 }
+declare enum EngineEntityEvent {
+    ENTITY_ADDED = "EngineEntityEvent.ENTITY_ADDED",
+    ENTITY_REMOVED = "EngineEntityEvent.ENTITY_REMOVED",
+}
 declare class Engine extends EventEmitter {
     private _entities;
     private readonly _entityListeners;
@@ -25,4 +29,4 @@ declare class Engine extends EventEmitter {
     removeSystems(...systems: System[]): void;
     update(delta: number): void;
 }
-export { Engine, EngineEntityListener };
+export { Engine, EngineEntityEvent, EngineEntityListener };

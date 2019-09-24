@@ -7,6 +7,10 @@ interface Family {
     readonly entities: ReadonlyArray<Entity>;
     includesEntity(entity: Entity): boolean;
 }
+declare enum FamilyEvent {
+    ENTITY_ADDED = "FamilyEvent.ENTITY_ADDED",
+    ENTITY_REMOVED = "FamilyEvent.ENTITY_REMOVED",
+}
 declare abstract class AbstractFamily extends EventEmitter implements Family {
     private readonly _engine;
     private readonly _include;
@@ -38,4 +42,4 @@ declare class FamilyBuilder {
     build(): Family;
     buildCached(): CachedFamily;
 }
-export { AbstractFamily, Family, CachedFamily, FamilyBuilder };
+export { AbstractFamily, Family, CachedFamily, FamilyEvent, FamilyBuilder };

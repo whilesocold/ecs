@@ -226,4 +226,4 @@ class FamilyBuilder {
     }
 }
 
-export {AbstractFamily, Family, CachedFamily, FamilyBuilder};
+export {AbstractFamily, Family, CachedFamily, FamilyEvent, FamilyBuilder};

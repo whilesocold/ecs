@@ -184,4 +184,4 @@ class Engine extends EventEmitter {
     }
 }
 
-export {Engine, EngineEntityListener};
+export {Engine, EngineEntityEvent, EngineEntityListener};
