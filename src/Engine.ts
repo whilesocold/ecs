@@ -9,8 +9,8 @@ interface EngineEntityListener {
 }
 
 enum EngineEntityEvent {
-    ENTITY_ADDED = 'EngineEntityEvent.ENTITY_ADDED',
-    ENTITY_REMOVED = 'EngineEntityEvent.ENTITY_REMOVED',
+    EntityAdded = 'EngineEntityEvent.EntityAdded',
+    EntityRemoved = 'EngineEntityEvent.EntityRemoved',
 }
 
 /**
@@ -77,7 +77,7 @@ class Engine extends EventEmitter {
             for (let listener of this._entityListeners) {
                 listener.onEntityAdded(entity);
             }
-            this.emit(EngineEntityEvent.ENTITY_ADDED, entity)
+            this.emit(EngineEntityEvent.EntityAdded, entity)
         }
         return this;
     }
@@ -106,7 +106,7 @@ class Engine extends EventEmitter {
             for (let listener of this._entityListeners) {
                 listener.onEntityRemoved(entity);
             }
-            this.emit(EngineEntityEvent.ENTITY_REMOVED, entity)
+            this.emit(EngineEntityEvent.EntityRemoved, entity)
         }
     }
 

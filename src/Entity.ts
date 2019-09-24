@@ -5,8 +5,8 @@ import {EventEmitter} from "events";
 type EntityChangeListener = (entity: Entity) => any;
 
 enum EntityEvent {
-    COMPONENT_ADDED = 'EntityEvent.COMPONENT_ADDED',
-    COMPONENT_REMOVED = 'EntityEvent.COMPONENT_REMOVED'
+    ComponentAdded = 'EntityEvent.ComponentAdded',
+    ComponentRemoved = 'EntityEvent.ComponentRemoved'
 }
 
 /**
@@ -166,7 +166,7 @@ class Entity extends EventEmitter {
 
         for (let listener of this._listeners) {
             listener(this);
-            this.emit(EntityEvent.COMPONENT_ADDED, component)
+            this.emit(EntityEvent.ComponentAdded, component)
         }
         return newComponent;
     }
@@ -191,7 +191,7 @@ class Entity extends EventEmitter {
         delete this._components[tag];
         for (let listener of this._listeners) {
             listener(this);
-            this.emit(EntityEvent.COMPONENT_REMOVED, component)
+            this.emit(EntityEvent.ComponentRemoved, component)
         }
     }
 

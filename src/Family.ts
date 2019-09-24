@@ -22,8 +22,8 @@ interface Family {
 
 
 enum FamilyEvent {
-    ENTITY_ADDED = 'FamilyEvent.ENTITY_ADDED',
-    ENTITY_REMOVED = 'FamilyEvent.ENTITY_REMOVED',
+    EntityAdded = 'FamilyEvent.ComponentRemoved',
+    EntityRemoved = 'FamilyEvent.EntityRemoved',
 }
 
 /**
@@ -107,7 +107,7 @@ class CachedFamily extends AbstractFamily {
             this._entities.push(entity);
             this._needEntityRefresh = true;
             entity.addChangeListener(this.onEntityChanged);
-            this.emit(FamilyEvent.ENTITY_ADDED, entity);
+            this.emit(FamilyEvent.EntityAdded, entity);
         }
     }
 
@@ -117,7 +117,7 @@ class CachedFamily extends AbstractFamily {
             const entity = this._entities[index];
             this._entities.splice(index, 1);
             entity.removeChangeListener(this.onEntityChanged);
-            this.emit(FamilyEvent.ENTITY_REMOVED, entity);
+            this.emit(FamilyEvent.EntityRemoved, entity);
         }
     }
 
@@ -126,7 +126,7 @@ class CachedFamily extends AbstractFamily {
         if (index === -1) {
             this._entities.push(entity);
             entity.addChangeListener(this.onEntityChanged);
-            this.emit(FamilyEvent.ENTITY_ADDED, entity); // ???
+            this.emit(FamilyEvent.EntityAdded, entity); // ???
         }
         this._needEntityRefresh = true;
     };
