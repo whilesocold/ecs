@@ -24,7 +24,7 @@ declare class Entity extends EventEmitter {
     }>[];
     hasComponent<T extends Component>(componentClass: ComponentClass<T>): boolean;
     getComponent<T extends Component>(componentClass: ComponentClass<T>): T;
-    putComponent<T extends Component>(componentClass: ComponentClass<T>): T;
+    addComponent<T extends Component>(componentClass: ComponentClass<T>, props?: any): T;
     removeComponent<T extends Component>(componentClass: ComponentClass<T>): void;
     cast<T extends Component>(component: Component | undefined | null, componentClass: ComponentClass<T>): component is T;
     addChangeListener(listener: EntityChangeListener): this;

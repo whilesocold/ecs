@@ -86,7 +86,7 @@ class GravitySystem extends System {
         const position = entity.getComponent(PositionComponent);
       } else {
         // You can create components on an entity easily.
-        const position = entity.putComponent(PositionComponent);
+        const position = entity.addComponent(PositionComponent);
       }
     }
   }

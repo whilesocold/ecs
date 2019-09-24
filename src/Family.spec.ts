@@ -27,8 +27,8 @@ describe("Families work", function () {
     it("Family includes the corresponding entity for inclusion", function () {
         const engine = new Engine();
         const entity = new Entity();
-        entity.putComponent(MyComponent);
-        entity.putComponent(MyOtherComponent);
+        entity.addComponent(MyComponent);
+        entity.addComponent(MyOtherComponent);
         engine.addEntities(entity, new Entity());
         const builder = new FamilyBuilder(engine);
         builder.include(MyComponent, MyOtherComponent);
@@ -40,7 +40,7 @@ describe("Families work", function () {
     it("Family includes the corresponding entity for exclusion", function () {
         const engine = new Engine();
         const entity = new Entity();
-        entity.putComponent(MyComponent);
+        entity.addComponent(MyComponent);
         engine.addEntities(entity, new Entity());
         const builder = new FamilyBuilder(engine);
         builder.exclude(MyComponent);

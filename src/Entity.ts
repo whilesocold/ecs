@@ -136,7 +136,7 @@ class Entity extends EventEmitter {
      * @param componentClass The class of the component.
      * @returns The newly created component.
      */
-    putComponent<T extends Component>(componentClass: ComponentClass<T>): T {
+    addComponent<T extends Component>(componentClass: ComponentClass<T>, props: any = {}): T {
         const tag = componentClass.tag || componentClass.name;
         const component = this._components[tag];
         if (component) {
@@ -151,6 +151,9 @@ class Entity extends EventEmitter {
         const newComponent = new componentClass();
         this._components[tag] = newComponent;
         this._componentClasses[tag] = componentClass;
+
+        Object.assign(newComponent, props);
+
         for (let listener of this._listeners) {
             listener(this);
             this.emit(EntityEvent.COMPONENT_ADDED, component)
