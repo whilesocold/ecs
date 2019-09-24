@@ -76,8 +76,8 @@ class Engine extends EventEmitter {
             this._entities.push(entity);
             for (let listener of this._entityListeners) {
                 listener.onEntityAdded(entity);
-                this.emit(EngineEntityEvent.ENTITY_ADDED, entity)
             }
+            this.emit(EngineEntityEvent.ENTITY_ADDED, entity)
         }
         return this;
     }
@@ -105,8 +105,8 @@ class Engine extends EventEmitter {
             this._entities.splice(index, 1);
             for (let listener of this._entityListeners) {
                 listener.onEntityRemoved(entity);
-                this.emit(EngineEntityEvent.ENTITY_REMOVED, entity)
             }
+            this.emit(EngineEntityEvent.ENTITY_REMOVED, entity)
         }
     }
 
