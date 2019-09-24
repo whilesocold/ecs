@@ -1,11 +1,13 @@
+/// <reference types="node" />
 import { Component, ComponentClass } from "./Component";
 import { Engine } from "./Engine";
 import { Entity } from "./Entity";
+import { EventEmitter } from "events";
 interface Family {
     readonly entities: ReadonlyArray<Entity>;
     includesEntity(entity: Entity): boolean;
 }
-declare abstract class AbstractFamily implements Family {
+declare abstract class AbstractFamily extends EventEmitter implements Family {
     private readonly _engine;
     private readonly _include;
     private readonly _exclude;

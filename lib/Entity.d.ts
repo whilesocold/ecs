@@ -1,6 +1,8 @@
-import { ComponentClass, Component } from "./Component";
+/// <reference types="node" />
+import { Component, ComponentClass } from "./Component";
+import { EventEmitter } from "events";
 declare type EntityChangeListener = (entity: Entity) => any;
-declare class Entity {
+declare class Entity extends EventEmitter {
     private _id;
     private readonly _components;
     private readonly _listeners;
@@ -21,7 +23,7 @@ declare class Entity {
     putComponent<T extends Component>(componentClass: ComponentClass<T>): T;
     removeComponent<T extends Component>(componentClass: ComponentClass<T>): void;
     cast<T extends Component>(component: Component | undefined | null, componentClass: ComponentClass<T>): component is T;
-    addListener(listener: EntityChangeListener): this;
-    removeListener(listener: EntityChangeListener): this;
+    addChangeListener(listener: EntityChangeListener): this;
+    removeChangeListener(listener: EntityChangeListener): this;
 }
 export { Entity, EntityChangeListener };

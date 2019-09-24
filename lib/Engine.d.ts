@@ -1,10 +1,12 @@
+/// <reference types="node" />
 import { Entity } from "./Entity";
 import { System } from "./System";
+import { EventEmitter } from "events";
 interface EngineEntityListener {
     onEntityAdded(entity: Entity): void;
     onEntityRemoved(entity: Entity): void;
 }
-declare class Engine {
+declare class Engine extends EventEmitter {
     private _entities;
     private readonly _entityListeners;
     private readonly _systems;

@@ -1,6 +1,7 @@
-import { Component, ComponentClass } from "./Component";
-import { Engine, EngineEntityListener } from "./Engine";
-import { Entity } from "./Entity";
+import {Component, ComponentClass} from "./Component";
+import {Engine} from "./Engine";
+import {Entity} from "./Entity";
+import {EventEmitter} from "events";
 
 /**
  * A family is a criteria to separate your entities.
@@ -10,12 +11,19 @@ import { Entity } from "./Entity";
  * so you won't have to worry about filtering entities every time.
  */
 interface Family {
-  /**
-   * Computes a list of entities on the family.
-   * The list may or may not be cached, depending of implementation.
-   */
-  readonly entities: ReadonlyArray<Entity>;
-  includesEntity(entity: Entity): boolean;
+    /**
+     * Computes a list of entities on the family.
+     * The list may or may not be cached, depending of implementation.
+     */
+    readonly entities: ReadonlyArray<Entity>;
+
+    includesEntity(entity: Entity): boolean;
+}
+
+
+enum FamilyEvent {
+    ENTITY_ADDED = 'FamilyEvent.ENTITY_ADDED',
+    ENTITY_REMOVED = 'FamilyEvent.ENTITY_REMOVED',
 }
 
 /**
@@ -23,40 +31,42 @@ interface Family {
  * This class is private to this module.
  * @private
  */
-abstract class AbstractFamily implements Family {
-  private readonly _engine: Engine;
-  private readonly _include: ReadonlyArray<ComponentClass<Component>>;
-  private readonly _exclude: ReadonlyArray<ComponentClass<Component>>;
+abstract class AbstractFamily extends EventEmitter implements Family {
+    private readonly _engine: Engine;
+    private readonly _include: ReadonlyArray<ComponentClass<Component>>;
+    private readonly _exclude: ReadonlyArray<ComponentClass<Component>>;
 
-  constructor(
-    engine: Engine,
-    include: ComponentClass<Component>[],
-    exclude: ComponentClass<Component>[]
-  ) {
-    this._engine = engine;
-    this._include = Object.freeze(include.slice(0));
-    this._exclude = Object.freeze(exclude.slice(0));
-  }
+    constructor(
+        engine: Engine,
+        include: ComponentClass<Component>[],
+        exclude: ComponentClass<Component>[]
+    ) {
+        super();
 
-  get engine() {
-    return this._engine;
-  }
-
-  abstract readonly entities: ReadonlyArray<Entity>;
-
-  includesEntity = (entity: Entity) => {
-    for (let include of this._include) {
-      if (!entity.hasComponent(include)) {
-        return false;
-      }
+        this._engine = engine;
+        this._include = Object.freeze(include.slice(0));
+        this._exclude = Object.freeze(exclude.slice(0));
     }
-    for (let exclude of this._exclude) {
-      if (entity.hasComponent(exclude)) {
-        return false;
-      }
+
+    get engine() {
+        return this._engine;
     }
-    return true;
-  };
+
+    abstract readonly entities: ReadonlyArray<Entity>;
+
+    includesEntity = (entity: Entity) => {
+        for (let include of this._include) {
+            if (!entity.hasComponent(include)) {
+                return false;
+            }
+        }
+        for (let exclude of this._exclude) {
+            if (entity.hasComponent(exclude)) {
+                return false;
+            }
+        }
+        return true;
+    };
 }
 
 /**
@@ -65,58 +75,61 @@ abstract class AbstractFamily implements Family {
  *
  */
 class CachedFamily extends AbstractFamily {
-  private _needEntityRefresh: boolean;
-  private _entities: Entity[];
+    private _needEntityRefresh: boolean;
+    private _entities: Entity[];
 
-  constructor(
-    engine: Engine,
-    include: ComponentClass<Component>[],
-    exclude: ComponentClass<Component>[]
-  ) {
-    super(engine, include, exclude);
-    const allEntities = this.engine.entities;
-    this._entities = allEntities.filter(this.includesEntity);
-    this.engine.addEntityListener(this);
-    for (let entity of allEntities) {
-      entity.addListener(this.onEntityAdded);
+    constructor(
+        engine: Engine,
+        include: ComponentClass<Component>[],
+        exclude: ComponentClass<Component>[]
+    ) {
+        super(engine, include, exclude);
+        const allEntities = this.engine.entities;
+        this._entities = allEntities.filter(this.includesEntity);
+        this.engine.addEntityListener(this);
+        for (let entity of allEntities) {
+            entity.addChangeListener(this.onEntityAdded);
+        }
+        this._needEntityRefresh = false;
     }
-    this._needEntityRefresh = false;
-  }
 
-  get entities() {
-    if (this._needEntityRefresh) {
-      this._needEntityRefresh = false;
-      this._entities = this._entities.filter(this.includesEntity);
+    get entities() {
+        if (this._needEntityRefresh) {
+            this._needEntityRefresh = false;
+            this._entities = this._entities.filter(this.includesEntity);
+        }
+        return Object.freeze(this._entities.slice(0));
     }
-    return Object.freeze(this._entities.slice(0));
-  }
 
-  onEntityAdded(entity: Entity) {
-    const index = this._entities.indexOf(entity);
-    if (index === -1) {
-      this._entities.push(entity);
-      this._needEntityRefresh = true;
-      entity.addListener(this.onEntityChanged);
+    onEntityAdded(entity: Entity) {
+        const index = this._entities.indexOf(entity);
+        if (index === -1) {
+            this._entities.push(entity);
+            this._needEntityRefresh = true;
+            entity.addChangeListener(this.onEntityChanged);
+            this.emit(FamilyEvent.ENTITY_ADDED, entity);
+        }
     }
-  }
 
-  onEntityRemoved(entity: Entity) {
-    const index = this._entities.indexOf(entity);
-    if (index !== -1) {
-      const entity = this._entities[index];
-      this._entities.splice(index, 1);
-      entity.removeListener(this.onEntityChanged);
+    onEntityRemoved(entity: Entity) {
+        const index = this._entities.indexOf(entity);
+        if (index !== -1) {
+            const entity = this._entities[index];
+            this._entities.splice(index, 1);
+            entity.removeChangeListener(this.onEntityChanged);
+            this.emit(FamilyEvent.ENTITY_REMOVED, entity);
+        }
     }
-  }
 
-  onEntityChanged = (entity: Entity) => {
-    const index = this._entities.indexOf(entity);
-    if (index === -1) {
-      this._entities.push(entity);
-      entity.addListener(this.onEntityChanged);
-    }
-    this._needEntityRefresh = true;
-  };
+    onEntityChanged = (entity: Entity) => {
+        const index = this._entities.indexOf(entity);
+        if (index === -1) {
+            this._entities.push(entity);
+            entity.addChangeListener(this.onEntityChanged);
+            this.emit(FamilyEvent.ENTITY_ADDED, entity); // ???
+        }
+        this._needEntityRefresh = true;
+    };
 }
 
 /**
@@ -126,9 +139,9 @@ class CachedFamily extends AbstractFamily {
  * @private
  */
 class NonCachedFamily extends AbstractFamily {
-  get entities() {
-    return this.engine.entities.filter(this.includesEntity);
-  }
+    get entities() {
+        return this.engine.entities.filter(this.includesEntity);
+    }
 }
 
 /**
@@ -136,80 +149,81 @@ class NonCachedFamily extends AbstractFamily {
  * It's the only way to create the implementations of CachedFamily and NonCachedFamily.
  */
 class FamilyBuilder {
-  private _engine: Engine | null;
-  private _cached: boolean;
-  private readonly _include: ComponentClass<Component>[];
-  private readonly _exclude: ComponentClass<Component>[];
+    private _engine: Engine | null;
+    private _cached: boolean;
+    private readonly _include: ComponentClass<Component>[];
+    private readonly _exclude: ComponentClass<Component>[];
 
-  constructor(engine?: Engine) {
-    this._engine = engine || null;
-    this._include = [];
-    this._exclude = [];
-    this._cached = true;
-  }
-
-  /**
-   * Indicates than entities than are members of this class MUST
-   * HAVE this components.
-   * @param classes A list of component classes.
-   */
-  include(...classes: ComponentClass<Component>[]) {
-    this._include.push(...classes);
-    return this;
-  }
-  /**
-   * Indicates than entities than are members of this class MUST NOT
-   * HAVE this components.
-   * @param classes A list of component classes.
-   */
-  exclude(...classes: ComponentClass<Component>[]) {
-    this._exclude.push(...classes);
-    return this;
-  }
-
-  /**
-   * Changes the engine of the builder.
-   * Useful to create multiple instances of the same family for different
-   * engines.
-   * @param engine
-   */
-  changeEngine(engine: Engine) {
-    this._engine = engine;
-    return this;
-  }
-
-  /**
-   * Changes if the family should use cached values or not.
-   * @param cached If the family must use or not a cache.
-   */
-  setCached(cached: boolean) {
-    this._cached = cached;
-  }
-
-  /**
-   * Builds the family, using the information provided.
-   * @returns a new family to retrieve the entities.
-   */
-  build(): Family {
-    if (!this._engine) {
-      throw new Error("Family should always belong to an engine.");
+    constructor(engine?: Engine) {
+        this._engine = engine || null;
+        this._include = [];
+        this._exclude = [];
+        this._cached = true;
     }
-    if (!this._cached) {
-      this.setCached(false)
-    }
-    return new NonCachedFamily(this._engine, this._include, this._exclude);
-  }
 
-  // TODO
-  buildCached(): CachedFamily {
-    if (!this._engine) {
-      throw new Error("Family should always belong to an engine.");
+    /**
+     * Indicates than entities than are members of this class MUST
+     * HAVE this components.
+     * @param classes A list of component classes.
+     */
+    include(...classes: ComponentClass<Component>[]) {
+        this._include.push(...classes);
+        return this;
     }
-    if (!this._cached) {
-      this.setCached(true)
+
+    /**
+     * Indicates than entities than are members of this class MUST NOT
+     * HAVE this components.
+     * @param classes A list of component classes.
+     */
+    exclude(...classes: ComponentClass<Component>[]) {
+        this._exclude.push(...classes);
+        return this;
     }
-    return new CachedFamily(this._engine, this._include, this._exclude);
-  }
+
+    /**
+     * Changes the engine of the builder.
+     * Useful to create multiple instances of the same family for different
+     * engines.
+     * @param engine
+     */
+    changeEngine(engine: Engine) {
+        this._engine = engine;
+        return this;
+    }
+
+    /**
+     * Changes if the family should use cached values or not.
+     * @param cached If the family must use or not a cache.
+     */
+    setCached(cached: boolean) {
+        this._cached = cached;
+    }
+
+    /**
+     * Builds the family, using the information provided.
+     * @returns a new family to retrieve the entities.
+     */
+    build(): Family {
+        if (!this._engine) {
+            throw new Error("Family should always belong to an engine.");
+        }
+        if (!this._cached) {
+            this.setCached(false)
+        }
+        return new NonCachedFamily(this._engine, this._include, this._exclude);
+    }
+
+    // TODO
+    buildCached(): CachedFamily {
+        if (!this._engine) {
+            throw new Error("Family should always belong to an engine.");
+        }
+        if (!this._cached) {
+            this.setCached(true)
+        }
+        return new CachedFamily(this._engine, this._include, this._exclude);
+    }
 }
 
-export { AbstractFamily, Family, CachedFamily, FamilyBuilder };
+export {AbstractFamily, Family, CachedFamily, FamilyBuilder};
