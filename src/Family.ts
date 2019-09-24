@@ -195,10 +195,21 @@ class FamilyBuilder {
       throw new Error("Family should always belong to an engine.");
     }
     if (!this._cached) {
-      return new NonCachedFamily(this._engine, this._include, this._exclude);
+      this.setCached(false)
+    }
+    return new NonCachedFamily(this._engine, this._include, this._exclude);
+  }
+
+  // TODO
+  buildCached(): CachedFamily {
+    if (!this._engine) {
+      throw new Error("Family should always belong to an engine.");
+    }
+    if (!this._cached) {
+      this.setCached(true)
     }
     return new CachedFamily(this._engine, this._include, this._exclude);
   }
 }
 
-export { Family, FamilyBuilder };
+export { Family, CachedFamily, FamilyBuilder };
