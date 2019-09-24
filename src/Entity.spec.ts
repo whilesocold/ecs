@@ -13,6 +13,7 @@ class MyBadTagComponent implements Component {
 }
 
 describe("Entities work", function () {
+    /*
     it("Can only set id once", function () {
         const entity = new Entity();
         expect(() => entity.id).to.throw();
@@ -27,6 +28,7 @@ describe("Entities work", function () {
         expect(() => entity.id).to.not.throw();
         expect(entity.id).to.be.equals("testing id");
     });
+     */
     it("Can add a component.", function () {
         const entity = new Entity();
         expect(entity.addComponent(MyComponent)).to.be.instanceof(MyComponent);

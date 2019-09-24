@@ -1,4 +1,5 @@
 import {Component, ComponentClass} from "./Component";
+import {Guid} from "guid-typescript";
 import {EventEmitter} from "events";
 
 type EntityChangeListener = (entity: Entity) => any;
@@ -19,7 +20,7 @@ enum EntityEvent {
  * This set can be used to persist the entity on a database.
  */
 class Entity extends EventEmitter {
-    private _id: string | number | null = null;
+    private _id: string;
     private readonly _components: { [tag: string]: Component } = {};
     private readonly _listeners: EntityChangeListener[] = [];
     private readonly _componentClasses: {
@@ -27,10 +28,19 @@ class Entity extends EventEmitter {
     } = {};
 
     /**
+     * @constructor
+     */
+    constructor() {
+        super();
+
+        this._id = Guid.create().toString();
+    }
+
+    /**
      * Gets the id of the entity.
      * @throws when the id is null.
      */
-    get id(): string | number {
+    get id(): string {
         if (this._id === null) {
             throw new Error("Cannot retrieve an ID when is null.");
         }
@@ -41,7 +51,7 @@ class Entity extends EventEmitter {
      * Sets the id of the entity to a new value.
      * @throws when the new value is null or undefined or the id is already set.
      */
-    set id(value: string | number) {
+    set id(value: string) {
         if (value === null || value === undefined) {
             throw new Error(`Must set a non null value when setting an entity id.`);
         }
